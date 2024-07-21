@@ -1,4 +1,4 @@
-KERNEL_VERSION=6.9.8
+KERNEL_VERSION=6.8
 BUSYBOX_VERSION=1.36.1
 
 echo "[+] Copying everything from the src folder to the system home..."

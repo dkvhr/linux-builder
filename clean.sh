@@ -1,4 +1,4 @@
-export KERNEL_VERSION=6.9.8
+export KERNEL_VERSION=6.8
 export BUSYBOX_VERSION=1.36.1
 
 rm -r linux-$KERNEL_VERSION

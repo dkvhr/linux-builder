@@ -1,4 +1,4 @@
-export KERNEL_VERSION=6.9.8
+export KERNEL_VERSION=6.8
 export BUSYBOX_VERSION=1.36.1
 
 echo "[+] Downloading kernel..."
@@ -54,15 +54,12 @@ mount -t proc none /proc
 mount -t sysfs none /sys
 
 /bin/mount -t devtmpfs devtmpfs /dev
-chown 1337:1337 /tmp
+chown 0:0 /tmp
 
-setsid cttyhack setuidgid 1337 sh
+setsid cttyhack setuidgid 0 sh
 
 exec /bin/sh' > init
 chmod +x init
 
-#Copy everything from the src folder to the system home.
-cp ../../src/* home/
-
-#find . -print0 | cpio --null -ov --format=newc > ../../initramfs.cpio
-#gzip ./../../initramfs.cpio
+cd ../../linux-$KERNEL_VERSION
+make -j$(nproc) modules
