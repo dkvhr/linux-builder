@@ -61,5 +61,8 @@ setsid cttyhack setuidgid 1337 sh
 exec /bin/sh' > init
 chmod +x init
 
+#Copy everything from the src folder to the system home.
+cp ../../src/* home/
+
 find . -print0 | cpio --null -ov --format=newc > ../../initramfs.cpio
 gzip ./../../initramfs.cpio
