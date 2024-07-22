@@ -37,7 +37,18 @@ make -j$(nproc)
 make CONFIG_PREFIX=./../busybox_rootfs install
 echo "[+] Build OK..."
 
-mkdir -p initramfs/{bin,dev,etc,home,mnt,proc,sys,usr,tmp}
+mkdir -p initramfs/{bin,dev,etc,home/user,mnt,proc,sys,usr,tmp}
+
+cat << EOF > initramfs/etc/passwd
+root:x:0:0:root:/root:/bin/sh
+user:x:1000:1000:User:/home/user:/bin/sh
+EOF
+
+cat << EOF > initramfs/etc/group
+root:x:0:
+user:x:1000:
+EOF
+
 cd initramfs/dev
 sudo mknod sda b 8 0
 sudo mknod console c 5 1
@@ -58,8 +69,11 @@ chown 0:0 /tmp
 
 setsid cttyhack setuidgid 0 sh
 
+su - user
+
 exec /bin/sh' > init
 chmod +x init
 
 cd ../../linux-$KERNEL_VERSION
+echo "[+] Making modules..."
 make -j$(nproc) modules
