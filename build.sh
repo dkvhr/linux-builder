@@ -1,9 +1,11 @@
+#!/usr/bin/bash
+
 export KERNEL_VERSION=6.8
 export BUSYBOX_VERSION=1.36.1
 
 echo "[+] Downloading kernel..."
 wget -c https://mirrors.edge.kernel.org/pub/linux/kernel/v6.x/linux-$KERNEL_VERSION.tar.gz
-[ -e linux-$KERNEL_VERSION ] || tar xzf linux-$KERNEL_VERSION.tar.gz
+[ -e linux-$KERNEL_VERSION ] || tar xzvf linux-$KERNEL_VERSION.tar.gz
 
 echo "[+] Generating config files..."
 make -C linux-$KERNEL_VERSION defconfig
@@ -37,7 +39,8 @@ make -j$(nproc)
 make CONFIG_PREFIX=./../busybox_rootfs install
 echo "[+] Build OK..."
 
-mkdir -p initramfs/{bin,dev,etc,home/user,mnt,proc,sys,usr,tmp}
+mkdir -p initramfs/{bin,dev,etc,mnt,proc,sys,usr,tmp}
+mkdir -p initramfs/home/user
 
 cat << EOF > initramfs/etc/passwd
 root:x:0:0:root:/root:/bin/sh
