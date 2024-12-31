@@ -1,11 +1,11 @@
-KERNEL_VERSION=6.8
+KERNEL_VERSION=5.10.101
 BUSYBOX_VERSION=1.36.1
 
 echo "[+] Copying everything from the src folder to the system home..."
 cp src/* busybox-$BUSYBOX_VERSION/initramfs/home/user
 echo "[+] Generating initramfs..."
 cd busybox-$BUSYBOX_VERSION/initramfs
-find . -print0 | cpio --null -ov --format=newc > ../initramfs.cpio
+find . -print0 | cpio --null -ov --format=newc --owner=+0:+0 > ../initramfs.cpio
 gzip ./../initramfs.cpio
 cd ../../
 
